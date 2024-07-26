@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Tareas{% endblock %}
+
+{% block content %}
+<h1>Tareas</h1>
+
+<form method="GET" action="{{ url_for('tasks') }}">
+    <label for="user_id">Filtrar por usuario:</label>
+    <select id="user_id" name="user_id">
+        <option value="">Todos los usuarios</option>
+        {% for user in users %}
+        <option value="{{ user.id }}" {% if selected_user_id|int == user.id %}selected{% endif %}>{{ user.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filtrar</button>
+</form>
+
+<ul>
+{% for task in tasks %}
+    <li>
+        {{ task.title }} - Estado: {{ task.status }}
+        {% if task.user %}
+        - Asignado a: {{ task.user.name }}
+        {% endif %}
+        <a href="{{ url_for('edit_task', task_id=task.id) }}">Editar</a>
+        <form method="POST" action="{{ url_for('delete_task', task_id=task.id) }}" style="display: inline;">
+            <input type="submit" value="Eliminar" onclick="return confirm('¿Estás seguro de que quieres eliminar esta tarea?');">
+        </form>
+    </li>
+{% endfor %}
+</ul>
+
+<a href="{{ url_for('create_task') }}">Crear nueva tarea</a>
+{% endblock %}

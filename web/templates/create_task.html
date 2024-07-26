@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Crear Tarea{% endblock %}
+
+{% block content %}
+<h1>Crear Tarea</h1>
+<form method="POST">
+    <div>
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" required>
+    </div>
+    <div>
+        <label for="description">Descripción:</label>
+        <textarea id="description" name="description"></textarea>
+    </div>
+    <div>
+        <label for="status">Estado:</label>
+        <select id="status" name="status">
+            <option value="pendiente">Pendiente</option>
+            <option value="en_progreso">En Progreso</option>
+            <option value="completada">Completada</option>
+        </select>
+    </div>
+    <div>
+        <label for="user_id">Asignar a:</label>
+        <select id="user_id" name="user_id">
+            {% for user in users %}
+            <option value="{{ user.id }}">{{ user.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit">Crear Tarea</button>
+</form>
+<a href="{{ url_for('tasks') }}">Volver a la lista de tareas</a>
+{% endblock %}
